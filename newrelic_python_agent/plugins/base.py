@@ -9,7 +9,12 @@ import requests
 import socket
 import tempfile
 import time
-import urlparse
+
+try:
+    from urlparse import urlunparse
+except ImportError:
+    from urllib.parse import urlunparse
+    
 import six
 import os
 
@@ -482,13 +487,13 @@ class HTTPStatsPlugin(Plugin):
         if self.config.get('port'):
             netloc += ':%s' % self.config['port']
 
-        return urlparse.urlunparse((self.config.get('scheme', 'http'),
-                                    netloc,
-                                    self.config.get('path', self.DEFAULT_PATH),
-                                    None,
-                                    self.config.get('query',
-                                                    self.DEFAULT_QUERY),
-                                    None))
+        return urlunparse((self.config.get('scheme', 'http'),
+                           netloc,
+                           self.config.get('path', self.DEFAULT_PATH),
+                           None,
+                           self.config.get('query',
+                                           self.DEFAULT_QUERY),
+                           None))
 
     @property
     def request_kwargs(self):
